@@ -37,8 +37,10 @@ class DuixProvider(Provider):
             raise FileNotFoundError("Duix requires existing audio and reference video")
         code = str(uuid.uuid4())
         payload = {
-            "audio_url": audio.resolve().as_uri(),
-            "video_url": video.resolve().as_uri(),
+            # Duix treats these values as paths visible inside its own container.
+            # A file:// URI is not accepted by its media probes.
+            "audio_url": str(audio.resolve()),
+            "video_url": str(video.resolve()),
             "code": code,
             "chaofen": 0,
             "watermark_switch": 0,
@@ -54,4 +56,3 @@ class DuixProvider(Provider):
         )
         response.raise_for_status()
         return response.json()
-
