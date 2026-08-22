@@ -22,7 +22,7 @@ dependencies = [
 [project.optional-dependencies]
 tts = ["edge-tts>=7.2,<8"]
 dev = [
-  "pytest>=8.4,<9",
+  "pytest>=8.4,<10",
   "pytest-cov>=6.2,<7",
   "ruff>=0.12,<1",
 ]
