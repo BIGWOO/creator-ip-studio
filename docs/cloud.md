@@ -21,9 +21,10 @@ docker compose \
   up -d --build
 ```
 
-The cloud override removes localhost-only API binding. Put a TLS reverse proxy,
-VPN, or SSH tunnel in front of the API before granting external access. Never
-publish ports 5432, 8383, or the Docker socket.
+The cloud override keeps the API bound to localhost by default. Put a TLS
+reverse proxy, VPN, or SSH tunnel in front of it before granting external
+access. Set `CREATOR_IP_BIND_ADDRESS` only when that network boundary is ready.
+Never publish ports 5432, 8383, or the Docker socket.
 
 Validate with:
 
@@ -35,4 +36,3 @@ docker compose exec api studio smoke --workspace /workspace --duration 20
 For an S3-compatible artifact store, provision a private bucket and inject
 credentials through the runtime secret manager. V1 ships the URI contract but
 uses local volumes by default.
-
