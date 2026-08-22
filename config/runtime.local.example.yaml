@@ -1,0 +1,10 @@
+contract_version: "1.0"
+mode: cpu
+workspace_root: /workspace
+artifact_root: /workspace/projects
+providers:
+  moneyprinter:
+    base_url: http://moneyprinter:8080
+  duix:
+    base_url: http://duix-avatar:8383
+

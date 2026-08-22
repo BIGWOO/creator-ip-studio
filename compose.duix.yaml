@@ -1,0 +1,12 @@
+services:
+  duix-adapter-check:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ["studio"]
+    command: ["provider", "check", "duix"]
+    environment:
+      DUIX_BASE_URL: ${DUIX_BASE_URL:-http://host.docker.internal:8383}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+

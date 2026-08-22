@@ -1,0 +1,12 @@
+.git
+.venv
+.pytest_cache
+.ruff_cache
+workspace
+models
+cache
+deliveries
+runtime
+*.mp4
+*.wav
+

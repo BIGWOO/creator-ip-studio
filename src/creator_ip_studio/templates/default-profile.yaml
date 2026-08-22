@@ -1,0 +1,24 @@
+contract_version: "1.0"
+profile_id: default
+language: zh-TW
+voice:
+  provider: tone
+  name: zh-TW-HsiaoChenNeural
+  rate: "+0%"
+canvas:
+  width: 1280
+  height: 720
+  fps: 30
+  background: "#17152b"
+captions:
+  enabled: true
+  safe_bottom: 80
+visuals:
+  provider: builtin
+avatar:
+  enabled: false
+  provider: duix
+delivery:
+  include_manifest: true
+  include_qc: true
+

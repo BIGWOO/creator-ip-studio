@@ -1,0 +1,7 @@
+interface:
+  display_name: "Creator IP Studio"
+  short_description: "Build and run a reusable AI video production line"
+  default_prompt: "Use $creator-ip-studio to inspect this machine and create a test video."
+
+policy:
+  allow_implicit_invocation: true

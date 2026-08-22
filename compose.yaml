@@ -1,0 +1,64 @@
+name: creator-ip-studio
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: Dockerfile
+  env_file:
+    - path: .env
+      required: false
+  environment:
+    CREATOR_IP_DATABASE_URL: postgresql+psycopg://creator:creator@db:5432/creator_ip
+    CREATOR_IP_WORKSPACE: /workspace
+    CREATOR_IP_ARTIFACT_ROOT: /workspace/projects
+  volumes:
+    - ${CREATOR_IP_HOST_WORKSPACE:-./workspace}:/workspace
+  restart: unless-stopped
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: creator_ip
+      POSTGRES_USER: creator
+      POSTGRES_PASSWORD: creator
+    volumes:
+      - creator-ip-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U creator -d creator_ip"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    <<: *app
+    entrypoint: ["creator-ip-api"]
+    ports:
+      - "127.0.0.1:${CREATOR_IP_API_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health/ready"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+
+  worker-cpu:
+    <<: *app
+    entrypoint: ["creator-ip-worker"]
+    environment:
+      CREATOR_IP_DATABASE_URL: postgresql+psycopg://creator:creator@db:5432/creator_ip
+      CREATOR_IP_API_URL: http://api:8080
+      CREATOR_IP_WORKSPACE: /workspace
+      CREATOR_IP_ARTIFACT_ROOT: /workspace/projects
+      CREATOR_IP_WORKER_CAPABILITIES: cpu,ffmpeg
+      CREATOR_IP_WORKER_TOKEN: ${CREATOR_IP_WORKER_TOKEN:-local-development}
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  creator-ip-db:
+

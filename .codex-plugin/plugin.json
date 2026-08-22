@@ -1,0 +1,29 @@
+{
+  "name": "creator-ip-studio",
+  "version": "0.1.0",
+  "description": "Inspect, bootstrap, run, resume, and validate a reusable AI video production line.",
+  "author": {
+    "name": "BIGWOO",
+    "url": "https://github.com/BIGWOO"
+  },
+  "homepage": "https://github.com/BIGWOO/creator-ip-studio",
+  "repository": "https://github.com/BIGWOO/creator-ip-studio",
+  "license": "Apache-2.0",
+  "keywords": ["video", "creator", "workflow", "avatar", "automation"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Creator IP Studio",
+    "shortDescription": "Build a reusable personal-IP video production line.",
+    "longDescription": "Diagnose a machine, initialize an isolated workspace, generate resumable videos, run quality gates, and optionally connect MoneyPrinterTurbo or Duix.Avatar.",
+    "developerName": "BIGWOO",
+    "category": "Productivity",
+    "capabilities": ["Video", "Automation", "Local GPU"],
+    "websiteURL": "https://github.com/BIGWOO/creator-ip-studio",
+    "defaultPrompt": [
+      "Inspect this computer and prepare Creator IP Studio.",
+      "Create a no-key smoke-test video and show the report.",
+      "Resume the failed stage in my current video project."
+    ],
+    "brandColor": "#6D5EF5"
+  }
+}

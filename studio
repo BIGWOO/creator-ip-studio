@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if command -v uv >/dev/null 2>&1; then
+  exec uv run --project "$ROOT" studio "$@"
+fi
+if [ -x "$ROOT/.venv/bin/studio" ]; then
+  exec "$ROOT/.venv/bin/studio" "$@"
+fi
+echo "uv or a local .venv is required. Run scripts/bootstrap.sh first." >&2
+exit 1
+

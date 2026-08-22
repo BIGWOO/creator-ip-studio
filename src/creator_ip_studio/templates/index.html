@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="10">
+  <title>Creator IP Studio</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, system-ui, sans-serif; }
+    body { margin: 0; background: #121020; color: #f4f1ff; }
+    main { width: min(980px, calc(100% - 32px)); margin: 48px auto; }
+    header { padding: 28px; border: 1px solid #3c365f; border-radius: 18px; background: #1b1830; }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 5vw, 3.5rem); }
+    p { color: #bbb5dc; }
+    table { width: 100%; margin-top: 24px; border-collapse: collapse; background: #1b1830; border-radius: 14px; overflow: hidden; }
+    th, td { padding: 14px; text-align: left; border-bottom: 1px solid #302b4d; }
+    th { color: #aaa2d8; }
+    code { color: #c8c2ff; }
+    .empty { margin-top: 24px; padding: 24px; border: 1px dashed #4c456f; border-radius: 14px; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Creator IP Studio</h1>
+    <p>可重跑、可稽核、可移植的個人 IP 影片生產線。</p>
+    <p>API 文件：<a href="/docs">/docs</a>　健康狀態：<a href="/health/ready">/health/ready</a></p>
+  </header>
+  {% if runs %}
+  <table>
+    <thead><tr><th>Run</th><th>Project</th><th>Status</th><th>Updated</th></tr></thead>
+    <tbody>
+      {% for run in runs %}
+      <tr><td><code>{{ run.id[:8] }}</code></td><td>{{ run.project_id }}</td><td>{{ run.state }}</td><td>{{ run.updated_at }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">尚無任務。可先執行 <code>studio smoke</code>，或透過 API 建立專案。</div>
+  {% endif %}
+</main>
+</body>
+</html>
+
