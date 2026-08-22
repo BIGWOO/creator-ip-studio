@@ -12,7 +12,7 @@ from .config import init_workspace, resolve_profile
 from .doctor import inspect_environment
 from .models import ProjectSpec
 from .pipeline import run_project
-from .providers import DuixProvider, MoneyPrinterProvider
+from .providers import DuixProvider, MiniMaxH3Provider, MoneyPrinterProvider
 from .smoke import run_smoke
 
 app = typer.Typer(no_args_is_help=True, help="Creator IP Studio control CLI")
@@ -107,21 +107,55 @@ def run(
 
 @provider_app.command("check")
 def provider_check(
-    name: Annotated[str, typer.Argument(help="moneyprinter or duix")],
+    name: Annotated[str, typer.Argument(help="moneyprinter, duix, or minimax-h3")],
     base_url: Annotated[str | None, typer.Option()] = None,
 ) -> None:
     if name == "moneyprinter":
         provider = MoneyPrinterProvider(base_url or os.getenv("MPT_BASE_URL", "http://127.0.0.1:8081"))
     elif name == "duix":
         provider = DuixProvider(base_url or os.getenv("DUIX_BASE_URL", "http://127.0.0.1:8383"))
+    elif name == "minimax-h3":
+        provider = MiniMaxH3Provider(base_url or os.getenv("MINIMAX_H3_BASE_URL", "http://127.0.0.1:8188"))
     else:
-        raise typer.BadParameter("provider must be moneyprinter or duix")
+        raise typer.BadParameter("provider must be moneyprinter, duix, or minimax-h3")
     report = provider.health()
     _print(report.model_dump(mode="json"))
     if not report.healthy:
         raise typer.Exit(1)
 
 
+@provider_app.command("h3-generate")
+def h3_generate(
+    prompt: Annotated[str, typer.Option(prompt=True)],
+    output: Annotated[Path, typer.Option()] = Path("minimax-h3-output.mp4"),
+    preset: Annotated[str, typer.Option(help="draft or quality")] = "draft",
+    width: Annotated[int, typer.Option()] = 512,
+    height: Annotated[int, typer.Option()] = 288,
+    frames: Annotated[int, typer.Option()] = 39,
+    seed: Annotated[int, typer.Option()] = 42,
+    timeout_seconds: Annotated[int, typer.Option()] = 1800,
+    base_url: Annotated[str | None, typer.Option()] = None,
+) -> None:
+    if preset not in {"draft", "quality"}:
+        raise typer.BadParameter("preset must be draft or quality")
+    provider = MiniMaxH3Provider(base_url or os.getenv("MINIMAX_H3_BASE_URL", "http://127.0.0.1:8188"))
+    workflow = provider.workflow(
+        prompt,
+        preset=preset,
+        width=width,
+        height=height,
+        frames=frames,
+        seed=seed,
+    )
+    prompt_id = provider.submit(workflow)
+    result = provider.wait(prompt_id, timeout_seconds=timeout_seconds)
+    files = provider.output_files(result)
+    videos = [item for item in files if item["filename"].lower().endswith((".mp4", ".webm", ".mov"))]
+    if not videos:
+        raise RuntimeError(f"ComfyUI prompt {prompt_id} completed without a video output")
+    target = provider.download(videos[0], output)
+    _print({"prompt_id": prompt_id, "preset": preset, "output": str(target), "source": videos[0]})
+
+
 if __name__ == "__main__":
     app()
-

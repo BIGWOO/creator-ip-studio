@@ -12,12 +12,16 @@ stay in an external workspace or private overlay repository.
 - PostgreSQL-backed worker registration and expiring job leases
 - Local `file://` artifact store with traversal protection and SHA-256 manifests
 - No-key FFmpeg smoke video with audio, captions, cover, QC, and delivery manifest
-- Optional HTTP health adapters for MoneyPrinterTurbo and Duix.Avatar
+- Optional HTTP adapters for MiniMax H3, MoneyPrinterTurbo, and Duix.Avatar
 - CPU and NVIDIA Docker Compose profiles
 - Codex Skill and plugin manifest
 
 MoneyPrinterTurbo and Duix are not bundled. Their adapters preserve dependency,
 CUDA, model, and licensing isolation.
+
+MiniMax H3 is also installed as an isolated ComfyUI service. See
+[MiniMax H3 provider](docs/minimax-h3.md) for the reproducible Windows/Linux
+installer, model packs, smoke command, and one-prompt student setup.
 
 ## Local paths
 
@@ -106,6 +110,9 @@ audio, captions, renders, QC, and a delivery package.
 - Duix.Avatar is a large optional GPU service. Install it only after reviewing
   its model terms and recording the subject's consent. Run
   `studio provider check duix` before submitting any media.
+- MiniMax H3 uses a pinned external ComfyUI runtime. Run
+  `studio provider check minimax-h3` and use `provider h3-generate` for draft or
+  quality scene generation. Its default model download is approximately 43 GB.
 - No social network upload is performed by V1. Delivery metadata is marked
   `requires-human-review`.
 
@@ -123,4 +130,3 @@ docker build -t creator-ip-studio:test .
 
 This project is licensed under Apache-2.0. Third-party integrations retain their
 own licenses and model terms; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-

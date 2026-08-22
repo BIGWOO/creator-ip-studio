@@ -7,4 +7,5 @@ providers:
     base_url: http://moneyprinter:8080
   duix:
     base_url: http://duix-avatar:8383
-
+  minimax-h3:
+    base_url: http://127.0.0.1:8188

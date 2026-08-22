@@ -10,7 +10,11 @@ Creator IP Studio integrates with third-party systems through versioned adapters
 - `duixcom/Duix-Avatar` — separate source and model licensing terms. Connected
   as an optional external HTTP service. Creator IP Studio does not redistribute
   Duix images or model weights.
+- `Comfy-Org/ComfyUI`, `Comfy-Org/MiniMax-H3`,
+  `AIMixer/ComfyUI_MiniMaxH3_Director`,
+  `duckyshell/ComfyUI-MiniMaxH3-FirstBlockCache`, and
+  `Kijai/MiniMax-H3_comfy` — installed as a separately versioned provider.
+  Creator IP Studio does not redistribute their runtime source or model weights.
 
 Review the upstream licenses and model terms before enabling an adapter in a
 commercial environment.
-

@@ -11,7 +11,7 @@ services:
       CREATOR_IP_API_URL: http://api:8080
       CREATOR_IP_WORKSPACE: /workspace
       CREATOR_IP_ARTIFACT_ROOT: /workspace/projects
-      CREATOR_IP_WORKER_CAPABILITIES: nvidia,ffmpeg,avatar
+      CREATOR_IP_WORKER_CAPABILITIES: nvidia,ffmpeg,avatar,minimax-h3
       CREATOR_IP_WORKER_TOKEN: ${CREATOR_IP_WORKER_TOKEN:-local-development}
     volumes:
       - ${CREATOR_IP_HOST_WORKSPACE:-./workspace}:/workspace
@@ -21,4 +21,3 @@ services:
       api:
         condition: service_healthy
     restart: unless-stopped
-
